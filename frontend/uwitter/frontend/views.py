@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.http import Http404
 from django.shortcuts import render, redirect
 from forms import PostForm
+from lib.notify import notify_of_post
 from models import Uweet
 
 
@@ -22,6 +23,7 @@ def post_uweet(request):
             new_uweet.message = post_form.cleaned_data['message']
             new_uweet.poster = request.user
             new_uweet.save()
+            notify_of_post(request.user.username)
             messages.success(request, "You have Uweeted, sweet!")
             return redirect('frontend.views.user_uweets', username=request.user.username)
 

@@ -5,18 +5,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import render, redirect
-from models import UserProfile
-
-
-def get_user_profile(user):
-    try:
-        profile = user.userprofile
-    except UserProfile.DoesNotExist:
-        profile = UserProfile()
-        profile.user = user
-        profile.save()
-
-    return profile
+from frontend.lib.helpers import get_user_profile
 
 
 def get_user_or_404(username):

@@ -3,7 +3,7 @@
     {% if poster %}
         <h2>Uweets by {{ poster.username }}</h2>
         <p>
-            {% if user %}
+            {% if user and user != poster %}
                 {% if user in poster.userprofile.followers.all %}
                     <a href="{% url 'frontend.user_views.unfollow' poster.username %}?return={{ request.path }}">Unfollow</a>
                 {% else %}
@@ -23,6 +23,12 @@
                         <p>Uweeted by <a href="{% url 'frontend.views.user_uweets' uweet.poster.get_username %}">{{ uweet.poster.get_username }}</a> {{ uweet.date_posted|timesince }} ago</p>
                     </div>
                 </div>
+            </div>
+        </div>
+    {% empty %}
+        <div class="row">
+            <div class="col-lg-4">
+                No uweets!
             </div>
         </div>
     {% endfor %}
