@@ -14,13 +14,16 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf.urls import include, url
-from django.contrib import admin
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
     url(r'^/?$', 'frontend.views.index'),
     url(r'^post/?$', 'frontend.views.post_uweet'),
     url(r'^uweets/(?P<username>\w+)/?$', 'frontend.views.user_uweets'),
+
+    url(r'^follow/(?P<other_username>\w+)/?$', 'frontend.user_views.follow'),
+    url(r'^unfollow/(?P<other_username>\w+)/?$', 'frontend.user_views.unfollow'),
+
+    url(r'^user-uweets/?$', 'frontend.user_views.user_uweet_redirect'),
     url(r'^accounts/register/?$', 'frontend.user_views.register'),
     url(r'^accounts/', include('django.contrib.auth.urls'))
 ]

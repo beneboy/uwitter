@@ -2,6 +2,15 @@
 {% block content %}
     {% if poster %}
         <h2>Uweets by {{ poster.username }}</h2>
+        <p>
+            {% if user %}
+                {% if user in poster.userprofile.followers.all %}
+                    <a href="{% url 'frontend.user_views.unfollow' poster.username %}?return={{ request.path }}">Unfollow</a>
+                {% else %}
+                    <a href="{% url 'frontend.user_views.follow' poster.username %}?return={{ request.path }}">Follow</a>
+                {% endif %}
+            {% endif %}
+        </p>
     {% endif %}
     {% for uweet in uweets %}
         <div class="row">
@@ -11,11 +20,10 @@
                         <h3>{{ uweet.message }}</h3>
                     </div>
                     <div class="panel-footer">
-                        <p>Uweeted by {{ uweet.poster.get_username }} {{ uweet.date_posted|timesince }} ago</p>
+                        <p>Uweeted by <a href="{% url 'frontend.views.user_uweets' uweet.poster.get_username %}">{{ uweet.poster.get_username }}</a> {{ uweet.date_posted|timesince }} ago</p>
                     </div>
                 </div>
             </div>
         </div>
-
     {% endfor %}
 {% endblock content %}
