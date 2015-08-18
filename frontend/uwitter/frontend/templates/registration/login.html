@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-6 col-sm-push-3">
+        <h1>Log in to Uwitter</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-sm-push-3">
+        <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% include "form.html" %}
+            <input type="submit" value="Login" class="btn btn-success">
+        </form>
+    </div>
+</div>
+{% endblock content %}

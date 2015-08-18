@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="row">
+    <div class="col-sm-6 col-sm-push-3">
+        <h1>Sign up for Uwitter</h1>
+        <p>It&rsquo;s free and you can uweeting straight away.</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-6 col-sm-push-3">
+        <form action="{% url "frontend.user_views.register" %}" method="POST">
+            {% csrf_token %}
+            <p>
+                {% include "form.html" %}
+                <input type="submit" value="Register" class="btn btn-success">
+            </p>
+        </form>
+    </div>
+</div>
+{% endblock content %}
