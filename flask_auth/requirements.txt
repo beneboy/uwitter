@@ -1,0 +1,3 @@
+Flask==0.10.1
+SQLAlchemy==1.0.8
+bcrypt==2.0.0
