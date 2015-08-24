@@ -1,11 +1,17 @@
 from flask import Flask, request, jsonify
-from db import search_messages, post_message
+from db import search_messages, post_message, list_messages
 app = Flask(__name__)
 
 
 @app.route('/')
 def index():
     return 'I am a message server.'
+
+
+@app.route('/messages/')
+def message_list():
+    messages = [m.to_dict() for m in list_messages()]
+    return jsonify({'count': len(messages), 'messages': messages})
 
 
 @app.route('/messages/search')

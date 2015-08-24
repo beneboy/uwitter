@@ -18,6 +18,7 @@ from django.conf.urls import include, url
 urlpatterns = [
     url(r'^/?$', 'frontend.views.index'),
     url(r'^post/?$', 'frontend.views.post_uweet'),
+    url(r'^uweets/search/?$', 'frontend.views.search_uweets'),  # conflict! can't have a user with username 'search'
     url(r'^uweets/(?P<username>\w+)/?$', 'frontend.views.user_uweets'),
 
     url(r'^follow/(?P<other_username>\w+)/?$', 'frontend.user_views.follow'),

@@ -5,6 +5,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from forms import PostForm
 from lib.notify import notify_of_post
+from message_services import get_message_service
 from models import Uweet
 
 
@@ -19,14 +20,11 @@ def post_uweet(request):
     if request.method == 'POST':
         post_form = PostForm(request.POST)
         if post_form.is_valid():
-            new_uweet = Uweet()
-            new_uweet.message = post_form.cleaned_data['message']
-            new_uweet.poster = request.user
-            new_uweet.save()
+            ms = get_message_service()
+            ms.post_message(request.user.id, post_form.cleaned_data['message'])
             notify_of_post(request.user.username)
             messages.success(request, "You have Uweeted, sweet!")
             return redirect('frontend.views.user_uweets', username=request.user.username)
-
     else:
         post_form = PostForm()
 
@@ -39,6 +37,13 @@ def user_uweets(request, username):
     except User.DoesNotExist:
         raise Http404
 
-    uweets = Uweet.objects.filter(poster=poster).order_by('-date_posted')
+    ms = get_message_service()
+    uweets = ms.user_messages(poster.id)
 
     return render(request, 'uweet_list.html', {'poster': poster, 'uweets': uweets})
+
+
+def search_uweets(request):
+    ms = get_message_service()
+    uweets = ms.search_messages(request.GET.get('search', ''))
+    return render(request, 'uweet_list.html', {'uweets': uweets})

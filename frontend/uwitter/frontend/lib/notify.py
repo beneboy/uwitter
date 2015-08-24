@@ -1,11 +1,11 @@
-from django.contrib.auth.models import User
+from ..models import MicroServicesUser
 from .helpers import get_user_profile
 
 
 def notify_of_post(poster_username):
     try:
-        poster = User.objects.get_by_natural_key(poster_username)
-    except User.DoesNotExist:
+        poster = MicroServicesUser.objects.get_by_natural_key(poster_username)
+    except MicroServicesUser.DoesNotExist:
         return
 
     profile = get_user_profile(poster)
