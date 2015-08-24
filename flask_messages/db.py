@@ -28,8 +28,9 @@ def post_message(user_id, message):
     m.date_posted = datetime.now()
     s.add(m)
     s.commit()
+    message_dict = m.to_dict()
     s.close()
-    return m
+    return message_dict
 
 
 def search_messages(search):
@@ -37,7 +38,7 @@ def search_messages(search):
     messages_query = s.query(Message).filter(Message.message.ilike('%{}%'.format(search))).order_by(
         Message.date_posted.desc())
     # in real life, don't allow wildcard search injection like this
-    messages = list(messages_query)
+    messages = [message.to_dict() for message in messages_query]
     s.close()
     return messages
 
@@ -45,6 +46,6 @@ def search_messages(search):
 def list_messages():
     s = Session()
     messages_query = s.query(Message).order_by(Message.date_posted.desc())
-    messages = list(messages_query)
+    messages = [message.to_dict() for message in messages_query]
     s.close()
     return messages

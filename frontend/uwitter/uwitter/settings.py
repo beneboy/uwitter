@@ -107,7 +107,7 @@ LOGIN_REDIRECT_URL = 'frontend.user_views.user_uweet_redirect'
 
 AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesBackend',)
 
-MESSAGE_SERVICE = 'local'
+MESSAGE_SERVICE = 'remote'
 
 MICRO_SERVICES_AUTH_URL = 'http://127.0.0.1:5000'
 MICRO_SERVICES_MESSAGES_URL = 'http://127.0.0.1:5001'

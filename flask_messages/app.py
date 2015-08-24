@@ -10,7 +10,7 @@ def index():
 
 @app.route('/messages/')
 def message_list():
-    messages = [m.to_dict() for m in list_messages()]
+    messages = list_messages()
     return jsonify({'count': len(messages), 'messages': messages})
 
 
@@ -20,7 +20,7 @@ def message_search():
     if not search:
         messages = []
     else:
-        messages = [m.to_dict() for m in search_messages(search)]
+        messages = search_messages(search)
 
     return jsonify({'count': len(messages), 'messages': messages})
 
@@ -28,7 +28,7 @@ def message_search():
 @app.route('/messages/post', methods=['POST'])
 def message_post():
     m = post_message(request.form['user_id'], request.form['message'])
-    return jsonify(**m.to_dict())
+    return jsonify(**m)
 
 
 if __name__ == "__main__":
