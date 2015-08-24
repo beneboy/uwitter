@@ -22,9 +22,10 @@ def create_user(username, password):
     s = Session()
     u = User()
     u.username = username
-    u.password_hash = bcrypt.hashpw(password, bcrypt.gensalt())
+    u.password_hash = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
     s.add(u)
     s.commit()  # will throw error if username exists, in real life you would catch this to prevent 500s in HTTP layer
+    s.close()
 
 
 def authenticate_user(username, password):
@@ -32,6 +33,23 @@ def authenticate_user(username, password):
     try:
         u = s.query(User).filter_by(username=username).one()
     except (NoResultFound, MultipleResultsFound):
-        return False
+        return None
+    finally:
+        s.close()
 
-    return bcrypt.hashpw(password, u.password_hash) == u.password_hash
+    if bcrypt.hashpw(password.encode('utf-8'), u.password_hash.encode('utf-8')) == u.password_hash:
+        return u
+
+    return None
+
+
+def get_user_by_id(user_id):
+    s = Session()
+    try:
+        u = s.query(User).filter_by(id=user_id).one()
+    except (NoResultFound, MultipleResultsFound):
+        return None
+    finally:
+        s.close()
+
+    return u

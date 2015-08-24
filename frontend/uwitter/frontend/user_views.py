@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import render, redirect
-from frontend.lib.helpers import get_user_profile
+from .lib.helpers import get_user_profile
+from .auth_backends import MicroServicesUserCreationForm
 
 
 def get_user_or_404(username):
@@ -17,13 +17,13 @@ def get_user_or_404(username):
 
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = MicroServicesUserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Thank you for registering. You can now log in.")
             return redirect(reverse('django.contrib.auth.views.login'))
     else:
-        form = UserCreationForm()
+        form = MicroServicesUserCreationForm()
     return render(request, "registration/register.html", {
         'form': form,
     })

@@ -4,6 +4,11 @@ from django.db import models
 # Create your models here.
 
 
+class MicroServicesUser(User):
+    remote_id = models.IntegerField(null=False)
+    is_active = True
+
+
 class Uweet(models.Model):
     message = models.TextField(max_length=141)
     poster = models.ForeignKey(User)
@@ -11,5 +16,5 @@ class Uweet(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(MicroServicesUser)
     followers = models.ManyToManyField(User, related_name='following')

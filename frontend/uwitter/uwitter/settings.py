@@ -104,3 +104,7 @@ STATIC_URL = '/static/'
 
 AUTH_PROFILE_MODULE = 'frontend.UserProfile'
 LOGIN_REDIRECT_URL = 'frontend.user_views.user_uweet_redirect'
+
+AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesBackend',)
+
+MICRO_SERVICES_AUTH_URL = 'http://127.0.0.1:5000'
