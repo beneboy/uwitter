@@ -49,3 +49,11 @@ def list_messages():
     messages = [message.to_dict() for message in messages_query]
     s.close()
     return messages
+
+
+def list_user_messages(user_id):
+    s = Session()
+    messages_query = s.query(Message).filter(Message.user_id == user_id).order_by(Message.date_posted.desc())
+    messages = [message.to_dict() for message in messages_query]
+    s.close()
+    return messages

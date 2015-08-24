@@ -34,12 +34,19 @@ class MicroServiceMessageService(object):
     def search_url(self):
         return urljoin(self.base_url, '/messages/search')
 
+    def get_user_message_url(self, user_id):
+        return urljoin(self.base_url, '/messages/{}'.format(user_id))
+
     def post_message(self, user_id, message):
         user = MicroServicesUser.objects.get(id=user_id)
         requests.post(self.post_url, data={'user_id': user.remote_id, 'message': message})
 
     def user_messages(self, user_id):
-        raise NotImplementedError("User uweet not ready yet.")
+        user = MicroServicesUser.objects.get(id=user_id)
+        messages = requests.get(self.get_user_message_url(user.remote_id)).json()['messages']
+        for message in messages:
+            message['poster'] = user
+        return messages
 
     def search_messages(self, search):
         messages = requests.get(self.search_url, params={'search': search}).json()['messages']
