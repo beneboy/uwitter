@@ -6,12 +6,11 @@ from django.shortcuts import render, redirect
 from forms import PostForm
 from lib.notify import notify_of_post
 from message_services import get_message_service
-from models import Uweet
 
 
 def index(request):
-    uweets = Uweet.objects.order_by('-date_posted')
-
+    ms = get_message_service()
+    uweets = ms.all_messages()
     return render(request, 'uweet_list.html', {'uweets': uweets})
 
 

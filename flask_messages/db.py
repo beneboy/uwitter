@@ -17,7 +17,8 @@ class Message(Base):
     date_posted = Column(DateTime)
 
     def to_dict(self):
-        return {'id': self.id, 'user_id': self.user_id, 'message': self.message}
+        return {'id': self.id, 'user_id': self.user_id, 'message': self.message,
+                'date_posted': self.date_posted.isoformat()}
 
 
 def post_message(user_id, message):
