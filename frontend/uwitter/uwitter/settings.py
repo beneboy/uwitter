@@ -102,7 +102,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-AUTH_PROFILE_MODULE = 'frontend.UserProfile'
 LOGIN_REDIRECT_URL = 'frontend.user_views.user_uweet_redirect'
 
 AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesBackend',)
