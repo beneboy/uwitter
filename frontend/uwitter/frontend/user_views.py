@@ -1,17 +1,17 @@
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import Http404
 from django.shortcuts import render, redirect
+from frontend.models import MicroServicesUser
 from .lib.helpers import get_user_profile
 from .auth_backends import MicroServicesUserCreationForm
 
 
 def get_user_or_404(username):
     try:
-        return User.objects.get_by_natural_key(username)
-    except User.DoesNotExist:
+        return MicroServicesUser.objects.get_by_natural_key(username)
+    except MicroServicesUser.DoesNotExist:
         raise Http404
 
 

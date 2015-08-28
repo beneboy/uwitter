@@ -21,7 +21,7 @@ def post_uweet(request):
         if post_form.is_valid():
             ms = get_message_service()
             ms.post_message(request.user.id, post_form.cleaned_data['message'])
-            notify_of_post(request.user.username)
+            notify_of_post(request.user.username, post_form.cleaned_data['message'])
             messages.success(request, "You have Uweeted, sweet!")
             return redirect('frontend.views.user_uweets', username=request.user.username)
     else:

@@ -1,3 +1,5 @@
 Django==1.8.3
 django-widget-tweaks==1.4.1
 requests==2.7.0
+kombu==3.0.26
+redis==2.10.3
