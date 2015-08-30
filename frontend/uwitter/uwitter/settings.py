@@ -104,7 +104,10 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'frontend.user_views.user_uweet_redirect'
 
-AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesBackend',)
+AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesSocketBackend',)
+
+# use frontend.auth_backends.MicroServicesBackend for HTTP REST micro-service @ MICRO_SERVICES_AUTH_URL
+# or frontend.auth_backends.MicroServicesQueueBackend for queued login
 
 MESSAGE_SERVICE = 'message_queue'
 # can also be 'local' for local DB, or 'remote' for HTTP REST micro-service @ MICRO_SERVICES_MESSAGES_URL
@@ -112,6 +115,13 @@ MESSAGE_SERVICE = 'message_queue'
 MICRO_SERVICES_AUTH_URL = 'http://127.0.0.1:5000'
 MICRO_SERVICES_MESSAGES_URL = 'http://127.0.0.1:5001'
 
+MICRO_SERVICES_AUTH_SOCKET = ('127.0.0.1', 5002)
+
 NOTIFY_QUEUE_NAME = 'uwitter_notify'
+
 QUERY_QUEUE_NAME = 'uwitter_messages_query'
 RESPONSE_QUEUE_NAME = 'uwittter_messages_response'
+
+AUTH_REQUEST_QUEUE_NAME = 'uwitter_auth_request'
+AUTH_RESPONSE_QUEUE_NAME = 'uwitter_auth_response'
+

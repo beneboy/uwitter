@@ -53,3 +53,26 @@ def get_user_by_id(user_id):
         s.close()
 
     return u
+
+
+def process_request_message(message):
+    response = None
+
+    if message['action'] == 'signup':
+        create_user(message['username'], message['password'])
+        response = {'success': True}
+    elif message['action'] == 'login':
+        u = authenticate_user(message['username'], message['password'])
+
+        if u:
+            response = {'username': u.username, 'id': u.id}
+        else:
+            response = {'id': None}
+    elif message['action'] == 'get_user':
+        u = get_user_by_id(message['user_id'])
+        if u:
+            response = {'id': u.id, 'username': u.username}
+        else:
+            response = {'id': None}
+
+    return response
