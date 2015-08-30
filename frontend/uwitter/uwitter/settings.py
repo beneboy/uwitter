@@ -106,9 +106,12 @@ LOGIN_REDIRECT_URL = 'frontend.user_views.user_uweet_redirect'
 
 AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesBackend',)
 
-MESSAGE_SERVICE = 'remote'
+MESSAGE_SERVICE = 'message_queue'
+# can also be 'local' for local DB, or 'remote' for HTTP REST micro-service @ MICRO_SERVICES_MESSAGES_URL
 
 MICRO_SERVICES_AUTH_URL = 'http://127.0.0.1:5000'
 MICRO_SERVICES_MESSAGES_URL = 'http://127.0.0.1:5001'
 
 NOTIFY_QUEUE_NAME = 'uwitter_notify'
+QUERY_QUEUE_NAME = 'uwitter_messages_query'
+RESPONSE_QUEUE_NAME = 'uwittter_messages_response'

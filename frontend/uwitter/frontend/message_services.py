@@ -3,6 +3,7 @@ from urlparse import urljoin
 from django.conf import settings
 import requests
 from models import Uweet, MicroServicesUser
+import message_queue.messages
 
 
 def transform_raw_dict(message_dict):
@@ -16,9 +17,9 @@ def transform_raw_dict(message_dict):
     }
 
 
-
 class LocalMessageService(object):
-    def post_message(self, user_id, message):
+    @staticmethod
+    def post_message(user_id, message):
         user = MicroServicesUser.objects.get(id=user_id)
 
         u = Uweet()
@@ -26,18 +27,22 @@ class LocalMessageService(object):
         u.poster = user
         u.save()
 
-    def all_messages(self):
+    @staticmethod
+    def all_messages():
         return Uweet.objects.order_by('-date_posted')
 
-    def user_messages(self, user_id):
+    @staticmethod
+    def user_messages(user_id):
         poster = MicroServicesUser.objects.get(id=user_id)
         return Uweet.objects.filter(poster=poster).order_by('-date_posted')
 
-    def search_messages(self, search):
+    @staticmethod
+    def search_messages(search):
         return Uweet.objects.filter(message__contains=search)
 
 
 class MicroServiceMessageService(object):
+    """Retrieve messages from remote message service over HTTP"""
     @property
     def base_url(self):
         return settings.MICRO_SERVICES_MESSAGES_URL
@@ -75,8 +80,31 @@ class MicroServiceMessageService(object):
         return map(transform_raw_dict, messages)
 
 
+class MessageQueueMessageService(object):
+    """Retrieve messages from remote message service using message queue"""
+    @staticmethod
+    def all_messages():
+        return map(transform_raw_dict, message_queue.messages.get_all_messages())
+
+    @staticmethod
+    def user_messages(user_id):
+        user = MicroServicesUser.objects.get(id=user_id)
+        return map(transform_raw_dict, message_queue.messages.get_user_messages(user.remote_id))
+
+    @staticmethod
+    def search_messages(search):
+        return map(transform_raw_dict, message_queue.messages.search_messages(search))
+
+    @staticmethod
+    def post_message(user_id, message):
+        user = MicroServicesUser.objects.get(id=user_id)
+        message_queue.messages.post_message(user.remote_id, message)
+
+
 def get_message_service():
     if settings.MESSAGE_SERVICE == 'local':
         return LocalMessageService()
     elif settings.MESSAGE_SERVICE == 'remote':
         return MicroServiceMessageService()
+    elif settings.MESSAGE_SERVICE == 'message_queue':
+        return MessageQueueMessageService()
