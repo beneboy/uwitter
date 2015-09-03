@@ -31,7 +31,7 @@ def message_post():
     return jsonify(**m)
 
 
-@app.route('/messages/<int:user_id>', methods=['GET'])
+@app.route('/messages/<int:user_id>')
 def user_messages(user_id):
     messages = list_user_messages(user_id)
 

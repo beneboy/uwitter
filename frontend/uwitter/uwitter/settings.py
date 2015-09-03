@@ -109,7 +109,7 @@ AUTHENTICATION_BACKENDS = ('frontend.auth_backends.MicroServicesSocketBackend',)
 # use frontend.auth_backends.MicroServicesBackend for HTTP REST micro-service @ MICRO_SERVICES_AUTH_URL
 # or frontend.auth_backends.MicroServicesQueueBackend for queued login
 
-MESSAGE_SERVICE = 'message_queue'
+MESSAGE_SERVICE = 'local'
 # can also be 'local' for local DB, or 'remote' for HTTP REST micro-service @ MICRO_SERVICES_MESSAGES_URL
 
 MICRO_SERVICES_AUTH_URL = 'http://127.0.0.1:5000'
@@ -125,3 +125,5 @@ RESPONSE_QUEUE_NAME = 'uwittter_messages_response'
 AUTH_REQUEST_QUEUE_NAME = 'uwitter_auth_request'
 AUTH_RESPONSE_QUEUE_NAME = 'uwitter_auth_response'
 
+NOTIFIER_SERVICE = 'udp'
+NOTIFIER_SERVICE_SOCKET = ('127.0.0.1', 5004)
